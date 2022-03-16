@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface CryproVaultService {
     CryptoVault findMinPriceByVault(String currency);
     CryptoVault findMaxPriceByVault(String currency);
-    Page<CryptoVault> getAllVaults(Pageable paging);
+    Page<CryptoVault> getCurrencyByName(String currency, Pageable paging);
 }

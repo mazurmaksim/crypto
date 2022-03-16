@@ -24,8 +24,8 @@ public class CryptoVaultServiceImpl implements CryproVaultService {
     }
 
     @Override
-    public Page<CryptoVault> getAllVaults(Pageable paging) {
-        return cryptoVaultRepository.findAll(paging);
+    public Page<CryptoVault> getCurrencyByName(String currency, Pageable paging) {
+        return cryptoVaultRepository.findCryptoVaultByCurrencyOrderByPrice(currency, paging);
     }
 
     @Resource(name = "cryptoVaultRepository")

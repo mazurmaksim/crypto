@@ -35,7 +35,7 @@ public class CryptoCurrencyController {
                                                         @RequestParam(defaultValue = "0") int page,
                                                         @RequestParam(defaultValue = "10") int size) {
         Pageable paging = PageRequest.of(page, size);
-        return ResponseEntity.ok(service.getAllVaults(paging));
+        return ResponseEntity.ok(service.getCurrencyByName(currencyName, paging));
     }
 
     @Resource(name = "cryptoVaultService")
