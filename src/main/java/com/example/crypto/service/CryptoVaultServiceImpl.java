@@ -1,12 +1,14 @@
 package com.example.crypto.service;
 
 import com.example.crypto.entity.CryptoVault;
+import com.example.crypto.exception.currency.CurrencyNotFoundException;
 import com.example.crypto.repository.CryptoVaultRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Optional;
 
 @Service("cryptoVaultService")
 public class CryptoVaultServiceImpl implements CryproVaultService {
@@ -15,7 +17,9 @@ public class CryptoVaultServiceImpl implements CryproVaultService {
 
     @Override
     public CryptoVault findMinPriceByVault(String currencyName) {
-        return cryptoVaultRepository.findTopByCurrencyOrderByPriceDesc(currencyName);
+        return Optional.ofNullable(cryptoVaultRepository
+                .findTopByCurrencyOrderByPriceDesc(currencyName))
+                .orElseThrow(()-> new CurrencyNotFoundException("Currency Not Present in database"));
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class CryptoCurrencyController {
@@ -36,6 +37,11 @@ public class CryptoCurrencyController {
                                                         @RequestParam(defaultValue = "10") int size) {
         Pageable paging = PageRequest.of(page, size);
         return ResponseEntity.ok(service.getCurrencyByName(currencyName, paging));
+    }
+
+    @GetMapping("/cryptocurrencies/csv")
+    public void exportToCsv(HttpServletResponse response) {
+
     }
 
     @Resource(name = "cryptoVaultService")
