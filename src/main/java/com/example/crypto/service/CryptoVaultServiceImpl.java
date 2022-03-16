@@ -1,20 +1,31 @@
 package com.example.crypto.service;
 
 import com.example.crypto.entity.CryptoVault;
-import com.example.crypto.enums.CryptoVaultEnum;
 import com.example.crypto.repository.CryptoVaultRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-@Service
+@Service("cryptoVaultService")
 public class CryptoVaultServiceImpl implements CryproVaultService {
 
     private CryptoVaultRepository cryptoVaultRepository;
 
     @Override
-    public CryptoVault findMinPriceAndVault(CryptoVaultEnum vaultEnum) {
-        return null;
+    public CryptoVault findMinPriceByVault(String currencyName) {
+        return cryptoVaultRepository.findTopByCurrencyOrderByPriceDesc(currencyName);
+    }
+
+    @Override
+    public CryptoVault findMaxPriceByVault(String currencyName) {
+        return cryptoVaultRepository.findTopByCurrencyOrderByPriceAsc(currencyName);
+    }
+
+    @Override
+    public Page<CryptoVault> getAllVaults(Pageable paging) {
+        return cryptoVaultRepository.findAll(paging);
     }
 
     @Resource(name = "cryptoVaultRepository")
