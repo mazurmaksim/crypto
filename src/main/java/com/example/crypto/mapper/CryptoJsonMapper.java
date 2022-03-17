@@ -35,7 +35,7 @@ public class CryptoJsonMapper implements Mapper {
             LOGGER.info("Json mapped successfully");
         } catch (JsonProcessingException e) {
             LOGGER.error("Can't parse json");
-            throw new RuntimeException("Can't parse json");
+            throw new RuntimeException("Can't parse json {}", e);
         }
         return list;
     }

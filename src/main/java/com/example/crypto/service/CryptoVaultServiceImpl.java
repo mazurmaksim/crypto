@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 @Service("cryptoVaultService")
@@ -24,12 +25,19 @@ public class CryptoVaultServiceImpl implements CryproVaultService {
 
     @Override
     public CryptoVault findMaxPriceByVault(String currencyName) {
-        return cryptoVaultRepository.findTopByCurrencyOrderByPriceAsc(currencyName);
+        return Optional.ofNullable(cryptoVaultRepository.findTopByCurrencyOrderByPriceAsc(currencyName))
+                .orElseThrow(()-> new CurrencyNotFoundException("Currency Not Present in database"));
     }
 
     @Override
     public Page<CryptoVault> getCurrencyByName(String currency, Pageable paging) {
-        return cryptoVaultRepository.findCryptoVaultByCurrencyOrderByPrice(currency, paging);
+        return Optional.ofNullable(cryptoVaultRepository.findCryptoVaultByCurrencyOrderByPrice(currency, paging))
+                .orElseThrow(()-> new CurrencyNotFoundException("Currency Not Present in database"));
+    }
+
+    @Override
+    public List<CryptoVault> getAll() {
+        return cryptoVaultRepository.findAll();
     }
 
     @Resource(name = "cryptoVaultRepository")

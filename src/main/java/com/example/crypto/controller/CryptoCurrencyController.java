@@ -4,6 +4,7 @@ import com.example.crypto.entity.CryptoVault;
 import com.example.crypto.repository.CryptoVaultRepository;
 import com.example.crypto.service.CryproVaultService;
 import com.example.crypto.service.CryptoVaultServiceImpl;
+import com.example.crypto.service.CsvExportService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 public class CryptoCurrencyController {
 
     CryproVaultService service;
+    CsvExportService csvExportService;
 
     @GetMapping("/cryptocurrencies/minprice")
     public ResponseEntity<CryptoVault> getVaultMinPrice(@RequestParam(value = "name") String currencyName) {
@@ -40,12 +43,19 @@ public class CryptoCurrencyController {
     }
 
     @GetMapping("/cryptocurrencies/csv")
-    public void exportToCsv(HttpServletResponse response) {
-
+    public void exportToCsv(HttpServletResponse servletResponse) throws IOException {
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition","attachment; filename=\"employees.csv\"");
+        csvExportService.writeStatisticToCsv(servletResponse.getWriter());
     }
 
     @Resource(name = "cryptoVaultService")
     public void setRepository(CryproVaultService service) {
         this.service = service;
+    }
+
+    @Resource(name = "csvExportService")
+    public void setService(CsvExportService csvExportService) {
+        this.csvExportService = csvExportService;
     }
 }
