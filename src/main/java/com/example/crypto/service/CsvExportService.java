@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.*;
+import java.util.stream.IntStream;
 
 @Service("csvExportService")
 public class CsvExportService {
@@ -26,15 +27,16 @@ public class CsvExportService {
         List<List<CryptoVault>> vaultList = getStatisticFromDb();
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             csvPrinter.printRecord("Cryptocurrency Name", "Min Price", "Max Price");
-            for (int i = 0; i < getStatisticFromDb().size(); i++) {
-                try {
-                    csvPrinter.printRecord(vaultList.get(i).get(0).getCurrency(),
-                            vaultList.get(i).get(0).getPrice(),
-                            vaultList.get(i).get(1).getPrice());
-                } catch (IOException e) {
-                    LOGGER.error("Can't write data to CSV ", e);
-                }
-            }
+            IntStream.range(0, vaultList.size())
+                    .forEach(i -> {
+                        try {
+                            csvPrinter.printRecord(vaultList.get(i).get(0).getCurrency(),
+                                    vaultList.get(i).get(0).getPrice(),
+                                    vaultList.get(i).get(1).getPrice());
+                        } catch (IOException e) {
+                            LOGGER.error("Can't write data to CSV ", e);
+                        }
+                    });
         } catch (IOException e) {
             LOGGER.error("Can't write title to CSV ", e);
         }
@@ -42,15 +44,8 @@ public class CsvExportService {
 
     public List<List<CryptoVault>> getStatisticFromDb() {
         List<List<CryptoVault>> data = new ArrayList<>();
-        List<String> statistic = new ArrayList<>();
-        statistic.add("BTC");
-        statistic.add("ETH");
-        statistic.add("XRP");
-
-        statistic.forEach(s -> {
-            data.add(Arrays.asList(service.findMaxPriceByVault(s), service.findMinPriceByVault(s)));
-        });
+        List<String> statistic = Arrays.asList("BTC", "ETH", "XRP");
+        statistic.forEach(s -> data.add(Arrays.asList(service.findMaxPriceByVault(s), service.findMinPriceByVault(s))));
         return data;
     }
-
 }

@@ -25,18 +25,13 @@ public class CryptoJsonMapper implements Mapper {
     public List<CryptoVault> vaults() {
         data = new HttpGetData();
         List<CryptoVault> list;
-        try {
-            list = data.vaultsToDocument().stream().filter(cryptoVault -> cryptoVault.getCurrency().equals("BTC")
-                    && cryptoVault.getCurrencyUsd().equals("USD")
-                    || cryptoVault.getCurrency().equals("ETH")
-                    && cryptoVault.getCurrencyUsd().equals("USD")
-                    || cryptoVault.getCurrency().equals("XRP")
-                    && cryptoVault.getCurrencyUsd().equals("USD")).collect(Collectors.toList());
-            LOGGER.info("Json mapped successfully");
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Can't parse json");
-            throw new RuntimeException("Can't parse json {}", e);
-        }
+        list = data.vaultsToDocument().stream().filter(cryptoVault -> cryptoVault.getCurrency().equals("BTC")
+                && cryptoVault.getCurrencyUsd().equals("USD")
+                || cryptoVault.getCurrency().equals("ETH")
+                && cryptoVault.getCurrencyUsd().equals("USD")
+                || cryptoVault.getCurrency().equals("XRP")
+                && cryptoVault.getCurrencyUsd().equals("USD")).collect(Collectors.toList());
+        LOGGER.info("Json mapped successfully");
         return list;
     }
 
