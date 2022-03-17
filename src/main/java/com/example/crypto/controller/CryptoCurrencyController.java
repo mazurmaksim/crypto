@@ -45,7 +45,7 @@ public class CryptoCurrencyController {
     @GetMapping("/cryptocurrencies/csv")
     public void exportToCsv(HttpServletResponse servletResponse) throws IOException {
         servletResponse.setContentType("text/csv");
-        servletResponse.addHeader("Content-Disposition","attachment; filename=\"employees.csv\"");
+        servletResponse.addHeader("Content-Disposition","attachment; filename=\"statistics.csv\"");
         csvExportService.writeStatisticToCsv(servletResponse.getWriter());
     }
 
