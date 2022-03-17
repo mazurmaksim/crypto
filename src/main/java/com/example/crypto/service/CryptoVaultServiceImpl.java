@@ -40,6 +40,11 @@ public class CryptoVaultServiceImpl implements CryproVaultService {
         return cryptoVaultRepository.findAll();
     }
 
+    @Override
+    public void saveAll(List<CryptoVault> list) {
+        cryptoVaultRepository.saveAll(list);
+    }
+
     @Resource(name = "cryptoVaultRepository")
     public void setCryptoVaultRepository(CryptoVaultRepository cryptoVaultRepository) {
         this.cryptoVaultRepository = cryptoVaultRepository;

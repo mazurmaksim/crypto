@@ -11,4 +11,5 @@ public interface CryproVaultService {
     CryptoVault findMaxPriceByVault(String currency);
     Page<CryptoVault> getCurrencyByName(String currency, Pageable paging);
     List<CryptoVault> getAll();
+    void saveAll(List<CryptoVault> list);
 }
