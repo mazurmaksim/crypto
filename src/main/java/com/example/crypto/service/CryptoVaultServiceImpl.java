@@ -18,21 +18,21 @@ public class CryptoVaultServiceImpl implements CryproVaultService {
 
     @Override
     public CryptoVault findMinPriceByVault(String currencyName) {
-        return Optional.ofNullable(cryptoVaultRepository
-                .findTopByCurrencyOrderByPriceDesc(currencyName))
-                .orElseThrow(()-> new CurrencyNotFoundException("Currency Not Present in database"));
+        return cryptoVaultRepository
+                .findTopByCurrencyOrderByPriceDesc(currencyName)
+                .orElseThrow(()-> new CurrencyNotFoundException("Currency" + currencyName + "Not Present in database"));
     }
 
     @Override
     public CryptoVault findMaxPriceByVault(String currencyName) {
-        return Optional.ofNullable(cryptoVaultRepository.findTopByCurrencyOrderByPriceAsc(currencyName))
-                .orElseThrow(()-> new CurrencyNotFoundException("Currency Not Present in database"));
+        return cryptoVaultRepository.findTopByCurrencyOrderByPriceAsc(currencyName)
+                .orElseThrow(()-> new CurrencyNotFoundException("Currency" + currencyName + "Not Present in database"));
     }
 
     @Override
     public Page<CryptoVault> getCurrencyByName(String currency, Pageable paging) {
         return Optional.ofNullable(cryptoVaultRepository.findCryptoVaultByCurrencyOrderByPrice(currency, paging))
-                .orElseThrow(()-> new CurrencyNotFoundException("Currency Not Present in database"));
+                .orElseThrow(()-> new CurrencyNotFoundException("Currency" + currency + "Not Present in database"));
     }
 
     @Override

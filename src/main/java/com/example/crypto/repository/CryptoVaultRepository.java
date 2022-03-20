@@ -6,9 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository(value = "cryptoVaultRepository")
 public interface CryptoVaultRepository extends MongoRepository<CryptoVault, String> {
-    CryptoVault findTopByCurrencyOrderByPriceDesc(String currencyName);
-    CryptoVault findTopByCurrencyOrderByPriceAsc(String currencyName);
+    Optional<CryptoVault> findTopByCurrencyOrderByPriceDesc(String currencyName);
+    Optional<CryptoVault> findTopByCurrencyOrderByPriceAsc(String currencyName);
     Page<CryptoVault> findCryptoVaultByCurrencyOrderByPrice(String currencyName, Pageable pageable);
 }

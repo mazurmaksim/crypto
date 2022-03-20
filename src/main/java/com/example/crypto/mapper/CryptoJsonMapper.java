@@ -21,6 +21,9 @@ public class CryptoJsonMapper implements Mapper {
     HttpGetData data;
     CryptoVaultRepository repository;
 
+/**
+ * For some reason API gives for many currencies, so I made filter to parse needed currencies.
+ **/
     @Override
     public List<CryptoVault> vaults() {
         data = new HttpGetData();
@@ -31,14 +34,14 @@ public class CryptoJsonMapper implements Mapper {
                 && cryptoVault.getCurrencyUsd().equals("USD")
                 || cryptoVault.getCurrency().equals("XRP")
                 && cryptoVault.getCurrencyUsd().equals("USD")).collect(Collectors.toList());
-        LOGGER.info("Json mapped successfully");
+        LOGGER.info("Currencies data {} mapped successfully", list);
         return list;
     }
 
     @Scheduled(fixedDelayString = "${fixedDelay.in.milliseconds}")
     public void execute() {
         repository.saveAll(vaults());
-        LOGGER.info("Vaults is wrote to database");
+        LOGGER.info("Currencies is wrote to database {}", vaults());
     }
 
     @Resource(name = "cryptoVaultRepository")
